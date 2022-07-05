@@ -1,0 +1,111 @@
+<!-- For more documentation on adding state see: https://markojs.com/docs/getting-started/#adding-state -->
+import seedData from '../../seed.json'
+
+class {
+  onCreate() {
+    function sum(arr) {
+      return arr.reduce((a, b) => a + b) / 100;
+    }
+
+    let gross = [];
+    let autoGrat = [];
+    let tax = [];
+    let tips = [];
+
+    seedData.tabs.map(tab => {
+      gross.push(tab.total);
+      autoGrat.push(tab.autogratuity);
+      tax.push(tab.tax);
+      tips.push(tab.tip);
+    });
+
+    this.state = {
+      totGross: sum(gross),
+      totTax: sum(tax),
+      totAutoGrat: sum(autoGrat),
+      totTips: sum(tips),
+      totNet: sum(gross) - sum(tips)
+    };
+  }
+}
+
+style {
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #1d1d1b;
+    background: #ffffff;
+    min-height: calc(100vh - 443px);
+    width: 100%;
+  }
+  .buttons {
+    display: inline;
+  }
+  .btn {
+    display: inline;
+  }
+  table {
+    margin: 20px auto;
+  }
+  tr>* {
+    padding: 0 15px 0 15px;
+  }
+  td.r-col {
+    text-align: right;
+  }
+  @media screen and (max-width: 767px) {
+    .container {
+      min-height: calc(100vh - 516px);
+    }
+  }
+}
+
+<headerContent/>
+
+<div class="container">
+  <main class="col-12">
+    <div class="w-100 d-flex flex-column justify-content-center align-items-center">
+      <a href="/" class="btn btn-outline-primary">Return to Home</a>
+
+    </div>
+    <h2 class="fw-lighter text-center">Total Sales Figures</h2>
+    <table>
+      <tr>
+        <th>Category</th>
+        <th class="r-col">Amount</th>
+
+      </tr>
+      <tr>
+        <td>Gross Sales</td>
+        <td class="r-col">$${state.totGross}</td>
+
+      </tr>
+      <tr>
+        <td>Net Sales</td>
+        <td class="r-col">$${state.totNet}</td>
+
+      </tr>
+      <tr>
+        <td>Autogratuity</td>
+        <td class="r-col">$${state.totAutoGrat}</td>
+
+      </tr>
+      <tr>
+        <td>Tax</td>
+        <td class="r-col">$${state.totTax}</td>
+
+      </tr>
+      <tr>
+        <td>Tips</td>
+        <td class="r-col">$${state.totTips}</td>
+
+      </tr>
+
+    </table>
+
+  </main>
+
+</div>
+<footerContent/>
+

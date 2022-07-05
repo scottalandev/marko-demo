@@ -1,0 +1,40 @@
+import seedData from '../../seed.json'
+
+style {
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #1d1d1b;
+    background: #ffffff;
+    min-height: calc(100vh - 443px);
+    width: 100%;
+  }
+  .buttons {
+    display: inline;
+  }
+  .btn {
+    display: inline;
+  }
+  @media screen and (max-width: 767px) {
+    .container {
+      min-height: calc(100vh - 516px);
+    }
+  }
+}
+
+<headerContent/>
+
+<div class="container">
+  <main class="col-12">
+    <h1 class="fw-lighter text-center">Sales Home</h1>
+    <div class="w-100 d-flex justify-content-center align-items-center buttons">
+      <a href="/totalSales" class="btn btn-outline-primary">View Total Sales Figures</a>
+      <a href="/itemSales" class="btn btn-outline-primary">View Item Sales Figures</a>
+
+    </div>
+
+  </main>
+
+</div>
+<footerContent/>

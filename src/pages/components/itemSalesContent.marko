@@ -1,0 +1,130 @@
+<!-- For more documentation on adding state see: https://markojs.com/docs/getting-started/#adding-state -->
+import seedData from '../../seed.json'
+
+class {
+  onCreate() {
+    let items = [];
+
+    seedData.tabs.map(tab => {
+      tab.items.map(item => {
+        let newItem = {
+          name: item.name,
+          amt: item.price * item.quantity
+        };
+        items.push(newItem);
+      });
+    });
+
+    let itemTotals = {};
+
+    items.forEach(function(item) {
+      if (itemTotals.hasOwnProperty(item.name)) {
+        itemTotals[item.name] = itemTotals[item.name] + item.amt;
+      } else {
+        itemTotals[item.name] = item.amt;
+      }
+    });
+
+    let salesByItem = [];
+
+    for (let key in itemTotals) {
+      salesByItem.push({ item: key, sales: (itemTotals[key] / 100).toFixed(2) });
+    }
+
+    let salesByItemAlpha = [...salesByItem].sort((a, b) => (a.item > b.item ? 1 : -1));
+
+    let salesByItemTotal = [...salesByItem].sort((a, b) => (b.sales - a.sales));
+
+    this.state = {
+      itemSalesAlpha: salesByItemAlpha,
+      itemSalesTotal: salesByItemTotal,
+      sortByItem: true
+    };
+  }
+
+  toggleSort() {
+    this.state.sortByItem = !this.state.sortByItem;
+  }
+}
+
+style {
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #1d1d1b;
+    background: #ffffff;
+    min-height: calc(100vh - 443px);
+    width: 100%;
+  }
+  .buttons {
+    display: inline;
+  }
+  .btn {
+    display: inline;
+  }
+  table {
+    margin: 20px auto;
+  }
+  tr > * {
+    padding: 0 15px 0 15px;
+  }
+  td.r-col {
+    text-align: right;
+  }
+  @media screen and (max-width: 767px) {
+    .container {
+      min-height: calc(100vh - 516px);
+    }
+  }
+}
+
+<headerContent/>
+
+<div class="container">
+  <main class="col-12">
+    <div class="w-100 d-flex flex-column justify-content-center align-items-center">
+      <a href="/" class="btn btn-outline-primary">Return to Home</a>
+
+    </div>
+    <h2 class="fw-lighter text-center">Sales by Item Figures</h2>
+    <div class="w-100 d-flex justify-content-center align-items-center buttons">
+      <button on-click("toggleSort") class="btn btn-outline-primary">Toggle Item/Sales Sorting</button>
+
+    </div>
+    <table>
+      <tr>
+        <th>Item Name</th>
+        <th class="r-col">Total Item Sales</th>
+
+      </tr>
+      <if(state.sortByItem)>
+        <for|item, index, array| of=state.itemSalesAlpha>
+          <tr>
+            <td>${item.item}</td> 
+            <td class="r-col">$${item.sales}</td>
+
+          </tr>
+
+        </for>
+
+      </if>
+      <else>
+        <for|item, index, array| of=state.itemSalesTotal>
+          <tr>
+            <td>${item.item}</td> 
+            <td class="r-col">$${item.sales}</td>
+
+          </tr>
+
+        </for>
+
+      </else>
+
+    </table>
+
+  </main>
+
+</div>
+<footerContent/>
+
