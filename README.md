@@ -1,4 +1,8 @@
-# Installation
+# marko-demo
+
+A simple site built with MarkoJS to compile, sort and display restaurant sales data.
+
+## Installation
 ```
 npm install
 npm run dev
